@@ -5,6 +5,8 @@ const vscode = require('vscode');
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 
+var default_plaform = "Debian";
+
 /**
  * @param {vscode.ExtensionContext} context
  */
@@ -15,29 +17,63 @@ function activate(context) {
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with  registerCommand
     // The commandId parameter must match the command field in package.json
-    let disposable = vscode.commands.registerCommand('qbot.dsuite', function () {
+    let suiteCommand = vscode.commands.registerCommand('pabot-quickstart.runSuite', function () {
         // The code you place here will be executed every time your command is executed
         var suite_path = vscode.window.activeTextEditor.document.uri.path;
         var suite_name = suite_path.replace(/^.*[\\\/]/, '').replace(/\.[^/.]+$/, "");
-        vscode.window.showQuickPick(["Windows", "Debian"]).then(
+
+        var options = ["Debian", "Windows"]
+        if (default_plaform == "Windows") {
+            options =["Windows", "Debian"]
+        }
+
+        vscode.window.showQuickPick(options).then(
             (selection) => {
                 if (!selection) {
                     return
                 }
-                var command = null;
+                default_plaform = selection
+
+                var command = vscode.workspace.getConfiguration('pabot-quickstart').get("commandSuiteDebian");
                 if (selection == "Windows") {
-                    command = "wsuite"
-                }else {
-                    command = "dsuite"
+                    command = vscode.workspace.getConfiguration('pabot-quickstart').get("commandSuiteWindows")
                 }
                 const terminal = vscode.window.createTerminal("Pabot");// Display a message box to the user
                 terminal.show(false);
-                terminal.sendText(command + " " + suite_name)
+                terminal.sendText(command.replace("${SUITE}", suite_name))
+            }
+        )
+    });
+    context.subscriptions.push(suiteCommand);
+
+    let tagCommand = vscode.commands.registerCommand('pabot-quickstart.runTag', function () {
+        // The code you place here will be executed every time your command is executed
+        var tag = vscode.workspace.getConfiguration('pabot-quickstart').get("debugTag");
+
+        var options = ["Debian", "Windows"]
+        if (default_plaform == "Windows") {
+            options =["Windows", "Debian"]
+        }
+
+        vscode.window.showQuickPick(options).then(
+            (selection) => {
+                if (!selection) {
+                    return
+                }
+                default_plaform = selection
+
+                var command = vscode.workspace.getConfiguration('pabot-quickstart').get("commandTagDebian");
+                if (selection == "Windows") {
+                    command = vscode.workspace.getConfiguration('pabot-quickstart').get("commandTagWindows")
+                }
+                const terminal = vscode.window.createTerminal("Pabot");// Display a message box to the user
+                terminal.show(false);
+                terminal.sendText(command.replace("${DEBUG_TAG}", tag))
             }
         )
     });
 
-    context.subscriptions.push(disposable);
+    context.subscriptions.push(tagCommand);
 }
 
 // This method is called when your extension is deactivated

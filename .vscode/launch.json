@@ -10,7 +10,7 @@
 			"type": "extensionHost",
 			"request": "launch",
 			"args": [
-				"--extensionDevelopmentPath=${workspaceFolder}"
+				"--extensionDevelopmentPath=C:\\Users\\kyle.williams\\Projects\\git_repos\\utils\\quick-run"
 			]
 		},
 		{
@@ -18,8 +18,8 @@
 			"type": "extensionHost",
 			"request": "launch",
 			"args": [
-				"--extensionDevelopmentPath=${workspaceFolder}",
-				"--extensionTestsPath=${workspaceFolder}/test/suite/index"
+				"--extensionDevelopmentPath=C:\\Users\\kyle.williams\\Projects\\git_repos\\utils\\quick-run",
+				"--extensionTestsPath=C:\\Users\\kyle.williams\\Projects\\git_repos\\utils\\quick-run/test/suite/index"
 			]
 		}
 	]

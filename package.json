@@ -1,50 +1,96 @@
 {
-  "name": "qbot",
-  "displayName": "QBot",
-  "description": "A button to quickly run robot suites",
-  "version": "0.0.1",
-  "engines": {
-    "vscode": "^1.74.0"
-  },
-  "categories": [
-    "Other"
-  ],
-  "activationEvents": [
-    "onCommand:qbot.dsuite"
-  ],
-  "main": "./extension.js",
-  "contributes": {
-    "commands": [
-      {
-        "command": "qbot.dsuite",
-        "title": "Run suite on debian",
-        "icon": "$(play)"
-      }
+    "name": "pabot-quickstart",
+    "displayName": "Pabot-Quickstart",
+    "description": "A button to quickly run robot suites",
+    "version": "0.0.2",
+    "engines": {
+        "vscode": "^1.74.0"
+    },
+    "categories": [
+        "Other"
     ],
-    "menus": {
-      "editor/title": [
-        {
-          "when": "resourceExtname == .robot",
-          "command": "qbot.dsuite",
-          "group" : "navigation"
-        }
-      ]
+    "activationEvents": [
+        "onCommand:pabot-quickstart.runSuite"
+    ],
+    "main": "./extension.js",
+    "contributes": {
+        "commands": [
+            {
+                "command": "pabot-quickstart.runSuite",
+                "title": "Run suite with Pabot",
+                "icon": "$(symbol-struct)"
+            },
+            {
+                "command": "pabot-quickstart.runTag",
+                "title": "Run tests with tag with Pabot",
+                "icon": "$(tag)"
+            }
+        ],
+        "menus": {
+            "editor/title": [
+                {
+                    "when": "resourceExtname == .robot || resourceExtname == .resource",
+                    "command": "pabot-quickstart.runSuite",
+                    "group": "navigation"
+                },
+                {
+                    "when": "resourceExtname == .robot || resourceExtname == .resource",
+                    "command": "pabot-quickstart.runTag",
+                    "group": "navigation"
+                }
+            ]
+        },
+        "configuration": {
+            "title": "Pabot-QuickStart",
+            "properties": {
+                "pabot-quickstart.debugTag": {
+                    "type": "string",
+                    "default": "debug",
+                    "description": "Which debug tag to run for tag-based quickstart"
+                },
+                "pabot-quickstart.commandSuiteDebian": {
+                    "type": "string",
+                    "default": "dsuite ${SUITE}",
+                    "description": "The command to launch debian suites with"
+                },
+                "pabot-quickstart.commandSuiteWindows": {
+                    "type": "string",
+                    "default": "wsuite ${SUITE}",
+                    "description": "The command to launch windows suites with"
+                },
+                "pabot-quickstart.commandTagDebian": {
+                    "type": "string",
+                    "default": "dtag ${DEBUG_TAG}",
+                    "description": "The command to launch tests with the debug tag windows"
+                },
+                "pabot-quickstart.commandTagWindows": {
+                    "type": "string",
+                    "default": "wtag ${DEBUG_TAG}",
+                    "description": "The command to launch tests with the debug tag windows"
+                }
+            }
+        },
+        "snippets": [
+            {
+                "language": "robotframework",
+                "path": "./snippets.json"
+            }
+        ]
+    },
+    "scripts": {
+        "lint": "eslint .",
+        "pretest": "npm run lint",
+        "test": "node ./test/runTest.js"
+    },
+    "devDependencies": {
+        "@types/vscode": "^1.74.0",
+        "@types/glob": "^8.0.0",
+        "@types/mocha": "^10.0.1",
+        "@types/node": "16.x",
+        "eslint": "^8.28.0",
+        "glob": "^8.0.3",
+        "mocha": "^10.1.0",
+        "typescript": "^4.9.3",
+        "@vscode/test-electron": "^2.2.0"
     }
-  },
-  "scripts": {
-    "lint": "eslint .",
-    "pretest": "npm run lint",
-    "test": "node ./test/runTest.js"
-  },
-  "devDependencies": {
-    "@types/vscode": "^1.74.0",
-    "@types/glob": "^8.0.0",
-    "@types/mocha": "^10.0.1",
-    "@types/node": "16.x",
-    "eslint": "^8.28.0",
-    "glob": "^8.0.3",
-    "mocha": "^10.1.0",
-    "typescript": "^4.9.3",
-    "@vscode/test-electron": "^2.2.0"
-  }
 }
